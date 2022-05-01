@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -65,9 +65,30 @@ model Token {
 // }
 
 model Language {
-  id           Int      @id @default(autoincrement())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   name         String
   internalName String
+  CodeExample  CodeExample[]
+}
+
+model CodeExample {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  code       String
+  language   Language @relation(fields: [languageId], references: [id])
+  languageId Int
+  Issue      Issue?   @relation(fields: [issueId], references: [id])
+  issueId    Int?
+}
+
+model Issue {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  description String
+  workAround  String[]
+  codeExample CodeExample[]
 }
