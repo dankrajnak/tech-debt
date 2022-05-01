@@ -57,7 +57,6 @@ const ShowIssuePage: BlitzPage = () => {
   )
 }
 
-ShowIssuePage.authenticate = true
 ShowIssuePage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default ShowIssuePage

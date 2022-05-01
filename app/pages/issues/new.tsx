@@ -2,6 +2,7 @@ import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createIssue from "app/issues/mutations/createIssue"
 import { IssueForm, FORM_ERROR } from "app/issues/components/IssueForm"
+import { Typography } from "@mui/material"
 
 const NewIssuePage: BlitzPage = () => {
   const router = useRouter()
@@ -9,7 +10,7 @@ const NewIssuePage: BlitzPage = () => {
 
   return (
     <div>
-      <h1>Create New Issue</h1>
+      <Typography variant="h2">Create New Issue</Typography>
 
       <IssueForm
         submitText="Create Issue"
@@ -30,12 +31,6 @@ const NewIssuePage: BlitzPage = () => {
           }
         }}
       />
-
-      <p>
-        <Link href={Routes.IssuesPage()}>
-          <a>Issues</a>
-        </Link>
-      </p>
     </div>
   )
 }

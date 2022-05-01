@@ -1,14 +1,18 @@
+import { Container } from "@mui/material"
+import { Box } from "@mui/system"
 import { Head, BlitzLayout } from "blitz"
 
-const Layout: BlitzLayout<{title?: string, children?: React.ReactNode}> = ({ title, children }) => {
+const Layout: BlitzLayout<{ title?: string; children?: React.ReactNode }> = ({
+  title,
+  children,
+}) => {
   return (
     <>
       <Head>
         <title>{title || "tech-debt"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      {children}
+      <Container sx={{ mt: 2 }}>{children}</Container>
     </>
   )
 }

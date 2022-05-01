@@ -2,7 +2,9 @@ import { ReactNode, PropsWithoutRef } from "react"
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { z } from "zod"
 import { validateZodSchema } from "blitz"
+import { Alert } from "@mui/material"
 export { FORM_ERROR } from "final-form"
+import LoadingButton from "@mui/lab/LoadingButton"
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -33,16 +35,12 @@ export function Form<S extends z.ZodType<any, any>>({
           {/* Form fields supplied as children are rendered here */}
           {children}
 
-          {submitError && (
-            <div role="alert" style={{ color: "red" }}>
-              {submitError}
-            </div>
-          )}
+          {submitError && <Alert severity="error"> {submitError}</Alert>}
 
           {submitText && (
-            <button type="submit" disabled={submitting}>
+            <LoadingButton type="submit" variant="contained" loading={!!submitting}>
               {submitText}
-            </button>
+            </LoadingButton>
           )}
 
           <style global jsx>{`

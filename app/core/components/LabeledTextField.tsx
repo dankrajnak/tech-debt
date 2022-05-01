@@ -1,5 +1,6 @@
+import { TextField } from "@mui/material"
 import { forwardRef, ComponentPropsWithoutRef, PropsWithoutRef } from "react"
-import { useField, UseFieldConfig } from "react-final-form"
+import { Field, useField, UseFieldConfig } from "react-final-form"
 
 export interface LabeledTextFieldProps extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
   /** Field name. */
@@ -28,36 +29,22 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
     })
 
     const normalizedError = Array.isArray(error) ? error.join(", ") : error || submitError
+    const showError = !!(touched && normalizedError)
 
     return (
       <div {...outerProps}>
-        <label {...labelProps}>
-          {label}
-          <input {...input} disabled={submitting} {...props} ref={ref} />
-        </label>
-
-        {touched && normalizedError && (
-          <div role="alert" style={{ color: "red" }}>
-            {normalizedError}
-          </div>
-        )}
-
-        <style jsx>{`
-          label {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            font-size: 1rem;
-          }
-          input {
-            font-size: 1rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-            border: 1px solid purple;
-            appearance: none;
-            margin-top: 0.5rem;
-          }
-        `}</style>
+        {/* <Field /> */}
+        <TextField
+          ref={ref}
+          label={input.name}
+          multiline
+          fullWidth
+          minRows={4}
+          {...input}
+          disabled={submitting}
+          error={showError}
+          helperText={showError && normalizedError}
+        />
       </div>
     )
   }

@@ -72,7 +72,6 @@ const EditIssuePage: BlitzPage = () => {
   )
 }
 
-EditIssuePage.authenticate = true
 EditIssuePage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default EditIssuePage
