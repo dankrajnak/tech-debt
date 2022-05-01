@@ -10,7 +10,9 @@ const NewIssuePage: BlitzPage = () => {
 
   return (
     <div>
-      <Typography variant="h2">Create New Issue</Typography>
+      <Typography variant="h2" mb={3}>
+        Create New Issue
+      </Typography>
 
       <IssueForm
         submitText="Create Issue"

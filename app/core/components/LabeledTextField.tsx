@@ -20,6 +20,7 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
       input,
       meta: { touched, error, submitError, submitting },
     } = useField(name, {
+      validate: (value) => (value ? undefined : "This field is required"),
       parse:
         props.type === "number"
           ? (Number as any)
@@ -36,10 +37,11 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
         {/* <Field /> */}
         <TextField
           ref={ref}
-          label={input.name}
+          label={label}
           multiline
           fullWidth
           minRows={4}
+          placeholder={props.placeholder}
           {...input}
           disabled={submitting}
           error={showError}

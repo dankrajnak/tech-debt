@@ -35,19 +35,18 @@ export function Form<S extends z.ZodType<any, any>>({
           {/* Form fields supplied as children are rendered here */}
           {children}
 
-          {submitError && <Alert severity="error"> {submitError}</Alert>}
+          {submitError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {" "}
+              {submitError}
+            </Alert>
+          )}
 
           {submitText && (
-            <LoadingButton type="submit" variant="contained" loading={!!submitting}>
+            <LoadingButton sx={{ mt: 2 }} type="submit" variant="contained" loading={!!submitting}>
               {submitText}
             </LoadingButton>
           )}
-
-          <style global jsx>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style>
         </form>
       )}
     />
