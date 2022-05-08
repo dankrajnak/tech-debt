@@ -3,6 +3,13 @@ import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Rout
 import Layout from "app/core/layouts/Layout"
 import getIssue from "app/issues/queries/getIssue"
 import deleteIssue from "app/issues/mutations/deleteIssue"
+import { Card, CircularProgress, Stack } from "@mui/material"
+import { Box } from "@mui/system"
+import sanitizeHtml from "sanitize-html"
+
+const Label = ({ children }: { children: string }) => (
+  <Box sx={{ fontWeight: "bold" }}>{children}</Box>
+)
 
 export const Issue = () => {
   const router = useRouter()
@@ -17,13 +24,9 @@ export const Issue = () => {
       </Head>
 
       <div>
-        <h1>Issue {issue.id}</h1>
-        <pre>{JSON.stringify(issue, null, 2)}</pre>
-
         <Link href={Routes.EditIssuePage({ issueId: issue.id })}>
           <a>Edit</a>
         </Link>
-
         <button
           type="button"
           onClick={async () => {
@@ -36,6 +39,24 @@ export const Issue = () => {
         >
           Delete
         </button>
+
+        <h1>Issue {issue.id}</h1>
+        <pre>{JSON.stringify(issue, null, 2)}</pre>
+
+        <Stack spacing={2}>
+          <div>
+            <Label>Name</Label>
+            {issue.name}
+          </div>
+          <div>
+            <div>
+              <Label>Description</Label>
+              <Card sx={{ padding: 2 }}>
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(issue.description) }} />
+              </Card>
+            </div>
+          </div>
+        </Stack>
       </div>
     </>
   )
@@ -44,13 +65,7 @@ export const Issue = () => {
 const ShowIssuePage: BlitzPage = () => {
   return (
     <div>
-      <p>
-        <Link href={Routes.IssuesPage()}>
-          <a>Issues</a>
-        </Link>
-      </p>
-
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<CircularProgress />}>
         <Issue />
       </Suspense>
     </div>

@@ -2,39 +2,75 @@ import { Suspense } from "react"
 import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getIssues from "app/issues/queries/getIssues"
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  Link as MaterialLink,
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Toolbar,
+  Typography,
+} from "@mui/material"
+import { formatDate } from "app/core/utils/utils"
 
-const ITEMS_PER_PAGE = 100
+const ITEMS_PER_PAGE = 20
 
 export const IssuesList = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
-  const [{ issues, hasMore }] = usePaginatedQuery(getIssues, {
-    orderBy: { id: "asc" },
+  const [{ issues, hasMore, count }] = usePaginatedQuery(getIssues, {
+    orderBy: { createdAt: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })
+  const numPages = Math.ceil(count / ITEMS_PER_PAGE)
 
-  const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
-  const goToNextPage = () => router.push({ query: { page: page + 1 } })
+  const goToPage = (page: number) => router.push({ query: { page } })
 
   return (
     <div>
-      <ul>
-        {issues.map((issue) => (
-          <li key={issue.id}>
-            <Link href={Routes.ShowIssuePage({ issueId: issue.id })}>
-              <a>{issue.name}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Typography variant="h3" marginBottom={3}>
+        Issues ({count})
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Created</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {issues.map((issue) => (
+              <TableRow key={issue.id}>
+                <TableCell>
+                  <Link href={Routes.ShowIssuePage({ issueId: issue.id })}>
+                    <MaterialLink href="">{issue.name}</MaterialLink>
+                  </Link>
+                </TableCell>
+                <TableCell>{formatDate(issue.createdAt)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <ul></ul>
 
-      <button disabled={page === 0} onClick={goToPreviousPage}>
-        Previous
-      </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
-        Next
-      </button>
+      {numPages > 1 && (
+        <Pagination
+          onChange={(_, page) => goToPage(page - 1)}
+          count={numPages}
+          hidePrevButton={page === 0}
+          hideNextButton={!hasMore}
+        />
+      )}
     </div>
   )
 }
@@ -47,13 +83,7 @@ const IssuesPage: BlitzPage = () => {
       </Head>
 
       <div>
-        <p>
-          <Link href={Routes.NewIssuePage()}>
-            <a>Create Issue</a>
-          </Link>
-        </p>
-
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<CircularProgress />}>
           <IssuesList />
         </Suspense>
       </div>
@@ -61,6 +91,20 @@ const IssuesPage: BlitzPage = () => {
   )
 }
 
-IssuesPage.getLayout = (page) => <Layout>{page}</Layout>
+IssuesPage.getLayout = (page) => (
+  <Layout
+    toolbar={
+      <AppBar color="secondary" position="static" sx={{ mb: 5 }}>
+        <Toolbar>
+          <Link href={Routes.NewIssuePage()}>
+            <Button>Create</Button>
+          </Link>
+        </Toolbar>
+      </AppBar>
+    }
+  >
+    {page}
+  </Layout>
+)
 
 export default IssuesPage

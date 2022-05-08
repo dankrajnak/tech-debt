@@ -4,6 +4,8 @@ import Layout from "app/core/layouts/Layout"
 import getIssue from "app/issues/queries/getIssue"
 import updateIssue from "app/issues/mutations/updateIssue"
 import { IssueForm, FORM_ERROR } from "app/issues/components/IssueForm"
+import { CreateIssueValidation } from "app/core/utils/validations"
+import { CircularProgress, Typography } from "@mui/material"
 
 export const EditIssue = () => {
   const router = useRouter()
@@ -21,19 +23,17 @@ export const EditIssue = () => {
   return (
     <>
       <Head>
-        <title>Edit Issue {issue.id}</title>
+        <title>Edit {issue.name}</title>
       </Head>
 
       <div>
-        <h1>Edit Issue {issue.id}</h1>
-        <pre>{JSON.stringify(issue, null, 2)}</pre>
+        <Typography variant="h2" mb={3}>
+          Edit {issue.name}
+        </Typography>
 
         <IssueForm
-          submitText="Update Issue"
-          // TODO use a zod schema for form validation
-          //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-          //         then import and use it here
-          // schema={UpdateIssue}
+          submitText="Update"
+          schema={CreateIssueValidation}
           initialValues={issue}
           onSubmit={async (values) => {
             try {
@@ -59,7 +59,7 @@ export const EditIssue = () => {
 const EditIssuePage: BlitzPage = () => {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<CircularProgress />}>
         <EditIssue />
       </Suspense>
 

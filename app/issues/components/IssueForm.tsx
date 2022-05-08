@@ -8,7 +8,7 @@ import { Button, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 export { FORM_ERROR } from "app/core/components/Form"
 import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp"
-import { getOrdinal } from "app/core/utils/numberUtils"
+import { getOrdinal } from "app/core/utils/utils"
 
 export function IssueForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
   return (

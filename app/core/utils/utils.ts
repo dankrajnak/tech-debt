@@ -14,3 +14,14 @@ export const getOrdinal = (n: number): string => {
   const suffix = suffixes.get(rule)
   return `${n}${suffix}`
 }
+
+const dateFormatter = makeSingleton(
+  () => new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "short" })
+)
+
+export const formatDate = (date: Date): string => {
+  if (!date) {
+    return ""
+  }
+  return dateFormatter().format(date)
+}
