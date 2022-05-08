@@ -16,3 +16,5 @@ declare module "blitz" {
     }
   }
 }
+
+export type SetState<T> = (newState: T | ((oldState: T) => T)) => void

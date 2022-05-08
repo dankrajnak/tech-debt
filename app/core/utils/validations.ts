@@ -5,8 +5,9 @@ const IssueCodeExample = z.object({
   language: z.number(),
 })
 
-export const IssueValidation = z.object({
+export const CreateIssueValidation = z.object({
+  name: z.string().nonempty(),
   description: z.string(),
-  workAround: z.array(z.string()),
-  codeExample: z.array(IssueCodeExample),
+  workArounds: z.array(z.string().nonempty()).optional(),
+  codeExample: z.array(IssueCodeExample).optional(),
 })

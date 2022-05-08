@@ -3,6 +3,7 @@ import Layout from "app/core/layouts/Layout"
 import createIssue from "app/issues/mutations/createIssue"
 import { IssueForm, FORM_ERROR } from "app/issues/components/IssueForm"
 import { Typography } from "@mui/material"
+import { CreateIssueValidation } from "app/core/utils/validations"
 
 const NewIssuePage: BlitzPage = () => {
   const router = useRouter()
@@ -19,7 +20,7 @@ const NewIssuePage: BlitzPage = () => {
         // TODO use a zod schema for form validation
         //  - Tip: extract mutation's schema into a shared `validations.ts` file and
         //         then import and use it here
-        // schema={CreateIssue}
+        schema={CreateIssueValidation}
         // initialValues={{}}
         onSubmit={async (values) => {
           try {
