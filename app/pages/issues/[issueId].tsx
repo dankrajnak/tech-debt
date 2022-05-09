@@ -3,7 +3,7 @@ import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Rout
 import Layout from "app/core/layouts/Layout"
 import getIssue from "app/issues/queries/getIssue"
 import deleteIssue from "app/issues/mutations/deleteIssue"
-import { Card, CircularProgress, Stack } from "@mui/material"
+import { Button, Card, CardContent, CircularProgress, Stack, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import sanitizeHtml from "sanitize-html"
 
@@ -40,10 +40,11 @@ export const Issue = () => {
           Delete
         </button>
 
-        <h1>Issue {issue.id}</h1>
-        <pre>{JSON.stringify(issue, null, 2)}</pre>
+        <Typography variant="h3" gutterBottom>
+          {issue.name}
+        </Typography>
 
-        <Stack spacing={2}>
+        <Stack spacing={4}>
           <div>
             <Label>Name</Label>
             {issue.name}
@@ -51,11 +52,21 @@ export const Issue = () => {
           <div>
             <div>
               <Label>Description</Label>
-              <Card sx={{ padding: 2 }}>
-                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(issue.description) }} />
+              <Card variant="outlined">
+                <CardContent>
+                  <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(issue.description) }} />
+                </CardContent>
               </Card>
             </div>
           </div>
+          {issue.workArounds && issue.workArounds.length > 0 && (
+            <div>
+              <Label>Workarounds</Label>
+              {issue.workArounds.map((workaround, i) => (
+                <div key={i}>{workaround}</div>
+              ))}
+            </div>
+          )}
         </Stack>
       </div>
     </>

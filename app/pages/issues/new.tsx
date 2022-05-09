@@ -2,7 +2,7 @@ import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createIssue from "app/issues/mutations/createIssue"
 import { IssueForm, FORM_ERROR } from "app/issues/components/IssueForm"
-import { Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { CreateIssueValidation } from "app/core/utils/validations"
 
 const NewIssuePage: BlitzPage = () => {
@@ -16,12 +16,8 @@ const NewIssuePage: BlitzPage = () => {
       </Typography>
 
       <IssueForm
-        submitText="Create Issue"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
+        submitText="Save"
         schema={CreateIssueValidation}
-        // initialValues={{}}
         onSubmit={async (values) => {
           try {
             const issue = await createIssueMutation(values)
@@ -38,6 +34,17 @@ const NewIssuePage: BlitzPage = () => {
   )
 }
 
-NewIssuePage.getLayout = (page) => <Layout title={"Create New Issue"}>{page}</Layout>
+NewIssuePage.getLayout = (page) => (
+  <Layout
+    title="Create New Issue"
+    toolbar={[
+      <Link key={0} href={Routes.IssuesPage()}>
+        <Button>Back</Button>
+      </Link>,
+    ]}
+  >
+    {page}
+  </Layout>
+)
 
 export default NewIssuePage

@@ -93,15 +93,11 @@ const IssuesPage: BlitzPage = () => {
 
 IssuesPage.getLayout = (page) => (
   <Layout
-    toolbar={
-      <AppBar color="secondary" position="static" sx={{ mb: 5 }}>
-        <Toolbar>
-          <Link href={Routes.NewIssuePage()}>
-            <Button>Create</Button>
-          </Link>
-        </Toolbar>
-      </AppBar>
-    }
+    toolbar={[
+      <Link key={0} href={Routes.NewIssuePage()}>
+        <Button>Create</Button>
+      </Link>,
+    ]}
   >
     {page}
   </Layout>
