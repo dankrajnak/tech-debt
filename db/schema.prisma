@@ -93,3 +93,11 @@ model Issue {
   workArounds String[]
   codeExample CodeExample[]
 }
+
+model Resource {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  remarks   String
+  link      String
+}
